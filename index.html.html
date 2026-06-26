@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fat Loss Master Plan — 205 to 185 lbs</title>
+<style>
+  :root {
+    --blue-dark:#1F4E79;--blue-mid:#2E75B6;--blue-light:#D6E4F0;
+    --green-dark:#1E4620;--green-mid:#2E7D32;--green-light:#E8F5E9;
+    --amber-dark:#7B4F00;--amber-light:#FFF8E1;
+    --red-dark:#7E2410;--red-light:#FDEEEC;
+    --teal-dark:#004D40;--teal-light:#E0F2F1;
+    --text:#1A1A1A;--muted:#555;--border:#DDEAF6;--bg:#F4F8FC;--white:#fff;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:Arial,sans-serif;background:var(--bg);color:var(--text);font-size:15px;}
+  a{color:var(--blue-mid);text-decoration:none;}
+
+  header{background:var(--blue-dark);color:white;padding:24px 32px;}
+  header h1{font-size:26px;font-weight:700;margin-bottom:6px;}
+  header p{font-size:14px;opacity:.75;}
+  .macro-strip{display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--border);}
+  .mbox{background:white;padding:14px;text-align:center;}
+  .mbox .v{font-size:22px;font-weight:700;color:var(--blue-dark);}
+  .mbox .l{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin-top:2px;}
+
+  /* iOS-safe nav using buttons */
+  nav{display:flex;background:var(--blue-dark);gap:2px;padding:0 12px;flex-wrap:wrap;position:sticky;top:0;z-index:100;}
+  .ntab{
+    padding:12px 18px;
+    color:rgba(255,255,255,.65);
+    cursor:pointer;
+    font-size:13px;
+    font-weight:600;
+    border:none;
+    border-bottom:3px solid transparent;
+    white-space:nowrap;
+    background:transparent;
+    -webkit-appearance:none;
+    appearance:none;
+    -webkit-tap-highlight-color:rgba(255,255,255,0.2);
+    touch-action:manipulation;
+    user-select:none;
+    -webkit-user-select:none;
+  }
+  .ntab.active{color:white;border-bottom-color:#5BB8F5;}
+  .ntab:active{opacity:0.7;}
+
+  main{max-width:1000px;padding:28px 32px;}
+  .panel{display:none;}
+  .panel.active{display:block;}
+
+  h2{font-size:20px;font-weight:700;color:var(--blue-dark);margin:0 0 16px;padding-bottom:8px;border-bottom:2px solid var(--blue-light);}
+  h3{font-size:15px;font-weight:700;color:var(--blue-mid);margin:20px 0 10px;}
+  p.desc{font-size:13px;color:var(--muted);margin-bottom:16px;line-height:1.6;}
+
+  table{width:100%;border-collapse:collapse;margin-bottom:20px;font-size:13px;}
+  th{background:var(--blue-dark);color:white;padding:9px 12px;text-align:left;font-size:12px;}
+  td{padding:9px 12px;border-bottom:1px solid var(--border);}
+  tr:nth-child(even) td{background:#F5F9FF;}
+  tr.total td{background:var(--blue-light);font-weight:700;}
+
+  .callout{padding:12px 16px;border-radius:0 6px 6px 0;font-size:13px;margin:12px 0;line-height:1.6;}
+  .c-blue{background:var(--blue-light);border-left:3px solid var(--blue-mid);color:var(--blue-dark);}
+  .c-amber{background:var(--amber-light);border-left:3px solid #F9A825;color:var(--amber-dark);}
+  .c-green{background:var(--green-light);border-left:3px solid var(--green-mid);color:var(--green-dark);}
+  .c-red{background:var(--red-light);border-left:3px solid #E53935;color:var(--red-dark);}
+
+  .exercise-card{background:white;border:1px solid var(--border);border-radius:8px;margin-bottom:14px;overflow:hidden;}
+  .ec-header{background:var(--green-light);padding:10px 16px;display:flex;justify-content:space-between;align-items:center;}
+  .ec-header h4{font-size:14px;font-weight:700;color:var(--green-dark);}
+  .ec-body{padding:10px 16px;}
+  .ex-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid #F0F4FA;font-size:13px;gap:8px;}
+  .ex-row:last-child{border-bottom:none;}
+  .ex-sets{color:var(--muted);font-size:12px;text-align:right;flex-shrink:0;}
+  .ex-name{display:flex;align-items:center;gap:8px;flex:1;}
+
+  /* How-to button on exercise */
+  .howto-btn{
+    background:var(--blue-mid);
+    color:white;
+    border:none;
+    border-radius:4px;
+    font-size:10px;
+    font-weight:700;
+    padding:3px 8px;
+    cursor:pointer;
+    white-space:nowrap;
+    flex-shrink:0;
+    -webkit-appearance:none;
+    appearance:none;
+    -webkit-tap-highlight-color:rgba(0,0,0,0.1);
+    touch-action:manipulation;
+    letter-spacing:0.3px;
+  }
+  .howto-btn:active{opacity:0.75;}
+
+  /* Modal overlay */
+  .modal-overlay{
+    display:none;
+    position:fixed;
+    top:0;left:0;right:0;bottom:0;
+    background:rgba(0,0,0,0.55);
+    z-index:500;
+    -webkit-overflow-scrolling:touch;
+    justify-content:center;
+    align-items:flex-end;
+  }
+  .modal-overlay.open{display:flex;}
+  .modal-box{
+    background:white;
+    width:100%;
+    max-width:600px;
+    max-height:85vh;
+    border-radius:16px 16px 0 0;
+    padding:24px 24px 32px;
+    overflow-y:auto;
+    -webkit-overflow-scrolling:touch;
+    position:relative;
+  }
+  .modal-title{font-size:18px;font-weight:700;color:var(--blue-dark);margin-bottom:4px;padding-right:36px;}
+  .modal-tag{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:16px;}
+  .modal-section{margin-bottom:14px;}
+  .modal-section-label{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--blue-mid);margin-bottom:6px;}
+  .modal-section p{font-size:13px;line-height:1.65;color:var(--text);}
+  .modal-section ul{font-size:13px;line-height:1.65;color:var(--text);padding-left:18px;}
+  .modal-section ul li{margin-bottom:4px;}
+  .modal-close{
+    position:absolute;top:16px;right:16px;
+    background:var(--blue-light);
+    border:none;border-radius:50%;
+    width:32px;height:32px;
+    font-size:18px;line-height:32px;text-align:center;
+    cursor:pointer;color:var(--blue-dark);
+    -webkit-appearance:none;
+    touch-action:manipulation;
+  }
+  .modal-warning{background:var(--amber-light);border-left:3px solid #F9A825;color:var(--amber-dark);padding:10px 12px;border-radius:0 4px 4px 0;font-size:12px;line-height:1.6;margin-top:12px;}
+
+  .timeline-item{display:flex;gap:16px;padding:14px 0;border-bottom:1px solid var(--border);}
+  .timeline-item:last-child{border-bottom:none;}
+  .tl-phase{min-width:100px;font-size:12px;font-weight:700;color:var(--blue-dark);}
+  .tl-wt{min-width:90px;font-size:12px;color:var(--muted);}
+  .tl-desc{font-size:13px;line-height:1.6;}
+
+  .stall-step{display:flex;gap:14px;padding:10px 0;border-bottom:1px solid var(--border);font-size:13px;}
+  .stall-step:last-child{border-bottom:none;}
+  .step-num{min-width:28px;height:28px;background:var(--blue-dark);color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;margin-top:1px;}
+
+  .supp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:16px;}
+  .supp-card{background:white;border:1px solid var(--border);border-radius:8px;padding:14px;}
+  .supp-name{font-size:14px;font-weight:700;color:var(--blue-dark);margin-bottom:4px;}
+  .supp-dose{font-size:12px;color:var(--muted);margin-bottom:6px;}
+  .supp-why{font-size:12px;color:var(--text);line-height:1.5;}
+  .badge-req{display:inline-block;font-size:10px;padding:2px 8px;border-radius:10px;background:var(--green-light);color:var(--green-dark);font-weight:700;margin-bottom:6px;}
+  .badge-opt{display:inline-block;font-size:10px;padding:2px 8px;border-radius:10px;background:var(--amber-light);color:var(--amber-dark);font-weight:700;margin-bottom:6px;}
+
+  @media(max-width:600px){
+    .macro-strip{grid-template-columns:repeat(3,1fr);}
+    main{padding:16px;}
+    .ntab{padding:10px 12px;font-size:12px;}
+    header{padding:16px;}
+    .modal-box{padding:20px 18px 28px;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Fat Loss Master Plan</h1>
+  <p>205 → 185 lbs &nbsp;|&nbsp; 60yr male &nbsp;|&nbsp; Calisthenics + walking &nbsp;|&nbsp; 90–120 day program</p>
+</header>
+
+<div class="macro-strip">
+  <div class="mbox"><div class="v">1,800</div><div class="l">Cal / day</div></div>
+  <div class="mbox"><div class="v">185g</div><div class="l">Protein</div></div>
+  <div class="mbox"><div class="v">145g</div><div class="l">Carbs</div></div>
+  <div class="mbox"><div class="v">55g</div><div class="l">Fat</div></div>
+  <div class="mbox"><div class="v">~17 wks</div><div class="l">Timeline</div></div>
+</div>
+
+<nav>
+  <button class="ntab active" onclick="show('nutrition',this)">Nutrition</button>
+  <button class="ntab" onclick="show('meals',this)">Meal Schedule</button>
+  <button class="ntab" onclick="show('workout',this)">Workouts</button>
+  <button class="ntab" onclick="show('timeline',this)">Timeline</button>
+  <button class="ntab" onclick="show('supps',this)">Supplements</button>
+  <button class="ntab" onclick="show('stall',this)">Stall Protocol</button>
+</nav>
+
+<main>
+
+<!-- NUTRITION -->
+<div id="nutrition" class="panel active">
+  <h2>Daily Nutrition Targets</h2>
+  <p class="desc">1,800 calories is the floor — not 1,600. At 60 with daily training, going below this accelerates muscle loss and cortisol elevation, both of which stall fat loss. Hold this number unless advised otherwise.</p>
+  <table>
+    <tr><th>Metric</th><th>Daily Target</th><th>Why It Matters</th></tr>
+    <tr><td><strong>Calories</strong></td><td>1,800</td><td>~800 cal deficit from estimated TDEE of 2,400–2,600</td></tr>
+    <tr><td><strong>Protein</strong></td><td>185g (0.9g/lb)</td><td>Primary lever for muscle preservation in deficit at 60</td></tr>
+    <tr><td><strong>Carbohydrates</strong></td><td>145g</td><td>Fuels calisthenics performance + dietary fiber</td></tr>
+    <tr><td><strong>Fat</strong></td><td>55g</td><td>Hormonal floor — testosterone production requires dietary fat</td></tr>
+    <tr><td><strong>Eating window</strong></td><td>7am – 7pm</td><td>12-hour window reduces insulin exposure, improves sleep quality</td></tr>
+    <tr><td><strong>Water</strong></td><td>100+ oz / day</td><td>Metabolic rate, appetite suppression, kidney function during fat loss</td></tr>
+  </table>
+  <div class="callout c-amber"><strong>The protein target is not negotiable.</strong> Every gram under 185 increases muscle loss risk. At 60, you lose muscle 2–3× faster than a 30yr old in a deficit. The whey shake + 5 whole eggs/day are what close the gap.</div>
+</div>
+
+<!-- MEAL SCHEDULE -->
+<div id="meals" class="panel">
+  <h2>Daily Meal Schedule</h2>
+  <p class="desc">Breakfast is split around your 8–10:30am training window. Total daily macros are unchanged — only the timing is adjusted from a standard 3-meal plan.</p>
+  <table>
+    <tr><th>Meal</th><th>Time</th><th>Cal</th><th>Protein</th><th>Key Foods</th></tr>
+    <tr><td><strong>Pre-workout breakfast</strong></td><td>7:00–7:15am</td><td>~250</td><td>22g</td><td>3 eggs + ½ cup oats</td></tr>
+    <tr><td><strong>Post-workout finish</strong></td><td>10:45–11am</td><td>~230</td><td>24g</td><td>2 eggs + Greek yogurt + oats</td></tr>
+    <tr><td><strong>Lunch (largest meal)</strong></td><td>12:30–1pm</td><td>~580</td><td>58g</td><td>7oz chicken + rice + broccoli + olive oil</td></tr>
+    <tr><td><strong>Afternoon shake</strong></td><td>3:00–3:30pm</td><td>~300</td><td>40g</td><td>2 scoops whey + banana + almond butter</td></tr>
+    <tr><td><strong>Dinner</strong></td><td>5:30–6:30pm</td><td>~440</td><td>41g</td><td>6oz protein + salad + ¼ avocado + starch</td></tr>
+    <tr class="total"><td>TOTAL</td><td>7am – 7pm</td><td>1,800</td><td>185g</td><td>Kitchen closes at 7:00pm</td></tr>
+  </table>
+  <div class="callout c-blue"><strong>Why split breakfast?</strong> Eating a large meal before 2.5hrs of exercise causes sluggishness and reduces fat oxidation. The split gives you fuel to perform without a full stomach, and the post-workout window maximizes muscle protein synthesis.</div>
+  <div class="callout c-green"><strong>The 3pm shake is your evening hunger defense.</strong> Placed deliberately to bridge lunch and dinner, it eliminates the salty-snack urge before it starts. If you find yourself hungry after dinner, move the shake 30 minutes later — don't add food.</div>
+</div>
+
+<!-- WORKOUT -->
+<div id="workout" class="panel">
+  <h2>Weekly Workout Plan</h2>
+  <p class="desc">4 training days per week. Walking every day. Lower back protocol built in from day one — no loaded spinal flexion until cleared. Tap <strong>HOW TO</strong> on any exercise for form cues.</p>
+
+  <div class="exercise-card">
+    <div class="ec-header"><h4>Day A — Push + Core &nbsp; (Monday / Thursday)</h4></div>
+    <div class="ec-body">
+      <div class="ex-row"><span class="ex-name"><button class="howto-btn" onclick="openModal('pushup')">HOW TO</button>Push-ups (standard)</span><span class="ex-sets">4 × max reps (you have 40+ capacity)</span></div>
+      <div class="ex-row"><span class="ex-name"><button class="howto-btn" onclick="openModal('pike')">HOW TO</button>Pike push-ups</span><span class="ex-sets">3 × 12–15</span></div>
+      <div class="ex-row"><span class="ex-name"><button class="howto-btn" onclick="openModal('dips')">HOW TO</button>Tricep dips (chair)</span><span class="ex-sets">3 × 15</span></div>
+      <div class="ex-row"><span class="ex-name"><button class="howto-btn" onclick="openModal('deadbug')">HOW TO</button>Dead bug</span><span class="ex-sets">3 × 10 each side</span></div>
+      <div class="ex-row"><span class="ex-name"><button class="howto-btn" onclick="openModal('plank')">HOW TO</button>Plank hold</span><span class="ex-sets">3 × 45–60 sec</span></div>
+      <div class="ex-row"><span class="ex-name"><button class="howto-btn" onclick="openModal('catcow')">HOW TO</button>Cat-cow + thoracic rotation</span><span class="ex-sets">2 × 10 (lower back care)</span></div>
+    </div>
+  </div>
+
+  <div class="exercise-card">
+    <div class="ec-header"><h4>Day B — Pull + Hinge &nbsp; (Tuesday / Friday)</h4></div>
+    <div class="ec-body">
+      <div class="ex-row"><span class="ex-name"><button class="howto-btn" onclick="openModal('pullup')">HOW TO</button>Pull-ups or inverted rows (under table)</span><span class="ex-sets">4 × max</span></div>
+      <div class="ex-row"><span class="ex-name"><button class="howto-btn" onclick="openModal('superman')">HOW TO</button>Superman holds</span><span class="ex-sets">3 × 12 (posterior chain / lower back rehab)</span></div>
+      <div class="ex-row"><span class="ex-name"><button class="howto-btn" onclick="openModal('slrdl')">HOW TO</button>Single-leg RDL (bodyweight)</span><span class="ex-sets">3 × 10 each side</span></div>
+      <div class="ex-row"><span class="ex-name"><button class="howto-btn" onclick="openModal('glute')">HOW TO</button>Glute bridges</span><span class="ex-sets">3 × 20</span></div>
+      <div class="ex-row"><span class="ex-name"><button class="howto-btn" onclick="openModal('hollow')">HOW TO</button>Hollow body hold</span><span class="ex-sets">3 × 20–30 sec</span></div>
+      <div class="ex-row"><span class="ex-name"><button class="howto-btn" onclick="openModal('hipflexor')">HOW TO</button>Hip flexor + piriformis stretch</span><span class="ex-sets">2 min each side — non-optional</span></div>
+    </div>
+  </div>
+
+  <div class="exercise-card">
+    <div class="ec-header"><h4>Day C — Squat + Legs &nbsp; (Saturday)</h4></div>
+    <div class="ec-body">
+      <div class="ex-row"><span class="ex-name"><button class="howto-btn" onclick="openModal('squat')">HOW TO</button>Bodyweight squats</span><span class="ex-sets">4 × 25 (you have 100-rep capacity)</span></div>
+      <div class="ex-row"><span class="ex-name"><button class="howto-btn" onclick="openModal('bss')">HOW TO</button>Bulgarian split squats (rear foot elevated)</span><span class="ex-sets">3 × 12 each side</span></div>
+      <div class="ex-row"><span class="ex-name"><button class="howto-btn" onclick="openModal('stepup')">HOW TO</button>Step-ups (18–24" surface)</span><span class="ex-sets">3 × 15 each side</span></div>
+      <div class="ex-row"><span class="ex-name"><button class="howto-btn" onclick="openModal('wallsit')">HOW TO</button>Wall sit</span><span class="ex-sets">3 × 45 sec</span></div>
+      <div class="ex-row"><span class="ex-name"><button class="howto-btn" onclick="openModal('calf')">HOW TO</button>Single-leg calf raises</span><span class="ex-sets">3 × 20</span></div>
+    </div>
+  </div>
+
+  <div class="exercise-card">
+    <div class="ec-header"><h4>Daily — Walking (every day without exception)</h4></div>
+    <div class="ec-body">
+      <div class="ex-row"><span>Steps target</span><span class="ex-sets">8,500–10,000 steps</span></div>
+      <div class="ex-row"><span>Pace</span><span class="ex-sets">Conversational zone 2 — you can hold a sentence</span></div>
+      <div class="ex-row"><span>Best timing</span><span class="ex-sets">After breakfast or after lunch (insulin management)</span></div>
+    </div>
+  </div>
+
+  <div class="callout c-amber"><strong>Lower back rule:</strong> Zero sit-ups, zero crunches. If single-leg RDLs cause pain, substitute glute bridge marches. Hip flexor tightness is the #1 cause of your type of lower back discomfort — the daily stretch is not optional.</div>
+
+  <h3>Progression Timeline</h3>
+  <table>
+    <tr><th>Month</th><th>Push</th><th>Pull</th><th>Legs</th></tr>
+    <tr><td>Month 1</td><td>Standard push-ups, pike, dips</td><td>Pull-ups / inverted rows</td><td>Squats, split squats, step-ups</td></tr>
+    <tr><td>Month 2</td><td>Add archer push-ups</td><td>Add resistance band rows</td><td>Add jump squats (5 reps/set)</td></tr>
+    <tr><td>Month 3</td><td>Decline push-ups, ring rows</td><td>Nordic curl negatives</td><td>Pistol squat progressions</td></tr>
+  </table>
+</div>
+
+<!-- TIMELINE -->
+<div id="timeline" class="panel">
+  <h2>90–120 Day Roadmap</h2>
+  <p class="desc">Target: 20 lbs in 15–17 weeks (1.3 lbs/week average). The last 5 lbs will take as long as the first 15 — plan for that now instead of being surprised by it.</p>
+  <div class="timeline-item">
+    <div class="tl-phase">Weeks 1–3<br>Adaptation</div>
+    <div class="tl-wt">~200–202 lbs</div>
+    <div class="tl-desc">Expect 3–5 lbs fast (water + glycogen depletion). Do not get excited — this is not fat. Primary goal: nail the Sunday prep system and build the walk habit. The habit is the result.</div>
+  </div>
+  <div class="timeline-item">
+    <div class="tl-phase">Weeks 4–8<br>True fat loss</div>
+    <div class="tl-wt">~194–198 lbs</div>
+    <div class="tl-desc">Real fat loss begins: 1–1.5 lbs/week. Energy may dip weeks 4–5 — this is metabolic adaptation, not a sign the plan is broken. Add creatine now if you haven't started. Increase workout volume per the progression.</div>
+  </div>
+  <div class="timeline-item">
+    <div class="tl-phase">Weeks 9–12<br>Stall zone</div>
+    <div class="tl-wt">~190–194 lbs</div>
+    <div class="tl-desc">A stall at weeks 9–10 is normal physiology. The body adapts to the deficit. Do NOT cut calories. Response: add a 20-min post-dinner walk 3 nights per week. Check sleep — under 6.5 hours halts fat loss measurably at 60.</div>
+  </div>
+  <div class="timeline-item">
+    <div class="tl-phase">Weeks 13–17<br>Final stretch</div>
+    <div class="tl-wt">~185–188 lbs</div>
+    <div class="tl-desc">Last 5–8 lbs is the hardest. Body fights back near goal weight. Hold protein target. Consider adding one refeed day per week at maintenance calories (+400 cal carbs only) to reset leptin and keep metabolism from downregulating further.</div>
+  </div>
+  <div class="timeline-item">
+    <div class="tl-phase">Week 18+<br>Maintenance</div>
+    <div class="tl-wt">185 lbs</div>
+    <div class="tl-desc">Add 200–300 cal/day back (carbs only, not fat or protein). Keep the exact same meal structure — the Sunday prep system is now a lifestyle, not a diet. Hold weight within 3 lbs for 8 weeks to reset your physiological set-point at 185.</div>
+  </div>
+  <div class="callout c-red" style="margin-top:16px;"><strong>The stall at weeks 9–10 is the most common failure point.</strong> People cut calories, feel worse, performance drops, they quit. The correct response is always activity first, calories never.</div>
+</div>
+
+<!-- SUPPLEMENTS -->
+<div id="supps" class="panel">
+  <h2>Supplement Protocol</h2>
+  <p class="desc">Four supplements only. Everything else is noise and expense. These are the ones with 20+ years of evidence at your age and goal.</p>
+  <div class="supp-grid">
+    <div class="supp-card">
+      <span class="badge-req">Required</span>
+      <div class="supp-name">Whey Isolate Protein</div>
+      <div class="supp-dose">2 scoops (~50g) / day in 3pm shake</div>
+      <div class="supp-why">Use isolate, not concentrate. Faster absorbing, lower lactose. Closes the 185g protein gap without adding excess fat or carbs.</div>
+    </div>
+    <div class="supp-card">
+      <span class="badge-req">Required</span>
+      <div class="supp-name">Vitamin D3 + K2</div>
+      <div class="supp-dose">2,000–4,000 IU D3 / 100–200mcg K2 daily</div>
+      <div class="supp-why">Critical at 60. Low D3 reduces testosterone, impairs muscle protein synthesis, and weakens immune function. Take with a fat-containing meal for absorption.</div>
+    </div>
+    <div class="supp-card">
+      <span class="badge-req">Required</span>
+      <div class="supp-name">Magnesium Glycinate</div>
+      <div class="supp-dose">400mg before bed</div>
+      <div class="supp-why">Most adults over 50 are deficient. Improves sleep quality measurably, reduces cortisol, and supports muscle recovery. Glycinate form — not oxide (low absorption).</div>
+    </div>
+    <div class="supp-card">
+      <span class="badge-opt">Recommended</span>
+      <div class="supp-name">Creatine Monohydrate</div>
+      <div class="supp-dose">5g/day, any time, no loading</div>
+      <div class="supp-why">30+ years of research. Preserves muscle in a caloric deficit, improves strength output in calisthenics, and has emerging evidence for cognitive benefits at 60+. Cheapest effective supplement available.</div>
+    </div>
+  </div>
+  <div class="callout c-blue">Buy supplements monthly in bulk — 5 lb whey bag, 500g creatine. Do not buy at GNC. Use Thorne (D3/K2, magnesium) and any reputable brand for creatine (it's a commodity). Budget: ~$80–100/month total.</div>
+</div>
+
+<!-- STALL PROTOCOL -->
+<div id="stall" class="panel">
+  <h2>Stall Protocol — In Order</h2>
+  <p class="desc">If weight stops moving for 10+ consecutive days, work through these steps in order. Do not skip ahead. Most stalls resolve at step 1 or 2.</p>
+  <div class="stall-step">
+    <div class="step-num">1</div>
+    <div><strong>Add a 20-min post-dinner walk 3 nights per week.</strong> Do this for 10 full days before concluding it didn't work. This is a 200–300 cal/day increase in expenditure without touching the diet.</div>
+  </div>
+  <div class="stall-step">
+    <div class="step-num">2</div>
+    <div><strong>Audit actual food intake for 3 days — weigh everything.</strong> Eyeballing portions drifts 20–30% high over time. The most common cause of stalls is calorie creep, not metabolic adaptation.</div>
+  </div>
+  <div class="stall-step">
+    <div class="step-num">3</div>
+    <div><strong>Check sleep.</strong> Less than 6.5 hours of sleep elevates cortisol, suppresses fat oxidation, and measurably halts fat loss. Magnesium glycinate at 400mg is the first intervention. No screens after 9pm.</div>
+  </div>
+  <div class="stall-step">
+    <div class="step-num">4</div>
+    <div><strong>Add one refeed day per week.</strong> Eat at maintenance calories (~2,200–2,400) adding carbs only — not fat or protein. This resets leptin, the hormone that signals your brain to allow fat burning. Do for 2 weeks and reassess.</div>
+  </div>
+  <div class="stall-step">
+    <div class="step-num">5</div>
+    <div><strong>Reassess with advisor only after steps 1–4 have been tried for a minimum of 2 weeks each.</strong> Changing the diet is always the last resort, not the first.</div>
+  </div>
+  <div class="callout c-red" style="margin-top:16px;"><strong>What NOT to do when you stall:</strong> Cut calories below 1,800. Add more exercise sessions. Skip the shake. These responses feel logical but they accelerate metabolic adaptation, increase muscle loss, and make the stall worse.</div>
+</div>
+
+</main>
+
+<!-- MODAL OVERLAY -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModalOutside(event)">
+  <div class="modal-box" id="modal-box">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-title" id="modal-title"></div>
+    <div class="modal-tag" id="modal-tag"></div>
+    <div id="modal-content"></div>
+  </div>
+</div>
+
+<script>
+// Tab navigation — iOS-safe via button elements
+function show(id, btn) {
+  document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
+  document.querySelectorAll('.ntab').forEach(function(t){ t.classList.remove('active'); });
+  document.getElementById(id).classList.add('active');
+  if (btn) { btn.classList.add('active'); }
+}
+
+// Exercise how-to data
+var exercises = {
+  pushup: {
+    title: "Push-ups (Standard)",
+    tag: "Day A — Push + Core",
+    setup: "Hands shoulder-width apart, directly under your shoulders. Fingers pointing forward or slightly out. Body forms a straight line from head to heels — no sagging hips, no raised butt.",
+    execution: [
+      "Lower your chest to 1 inch above the floor, elbows tracking 30–45° from your body (not flared out to 90°).",
+      "Pause briefly at the bottom — don't bounce.",
+      "Press back up to full arm extension. Squeeze your chest at the top."
+    ],
+    cues: "Think 'bend the floor apart' with your hands as you press — activates chest more than just pushing down. You have 40+ reps capacity so stop 2–3 reps short of failure to preserve form.",
+    warning: ""
+  },
+  pike: {
+    title: "Pike Push-ups",
+    tag: "Day A — Push + Core",
+    setup: "Start in a downward dog position — hips high, forming an inverted V. Hands shoulder-width, feet hip-width. Walk feet in slightly to increase the angle.",
+    execution: [
+      "Lower the top of your head toward the floor between your hands — you're pressing through a vertical path, not forward.",
+      "Elbows should flare slightly outward.",
+      "Press back up to starting position, fully extending arms."
+    ],
+    cues: "The more vertical your torso, the more shoulder-dominant this becomes. Great shoulder builder without loading the spine. Start conservative — this is harder than it looks.",
+    warning: ""
+  },
+  dips: {
+    title: "Tricep Dips (Chair)",
+    tag: "Day A — Push + Core",
+    setup: "Sit on the edge of a sturdy chair or bench. Place hands next to hips, fingers forward. Slide hips off the edge, legs extended or bent (bent is easier). Support is on your heels.",
+    execution: [
+      "Lower your body by bending at the elbows — aim for a 90° elbow bend.",
+      "Keep your back close to the chair throughout. Don't let your hips drift far forward.",
+      "Press back up to full arm extension."
+    ],
+    cues: "Keep shoulders down and back — don't let them creep up toward your ears. Leaning slightly forward increases chest involvement; staying upright targets triceps more.",
+    warning: "If you feel shoulder impingement (pinching), reduce range of motion. Stop just above the point of discomfort."
+  },
+  deadbug: {
+    title: "Dead Bug",
+    tag: "Day A — Push + Core | Lower Back Safe",
+    setup: "Lie on your back. Arms extended straight up toward ceiling. Hips and knees at 90° (tabletop position). Press your lower back firmly into the floor — this must stay pressed down throughout.",
+    execution: [
+      "Slowly lower your right arm overhead AND your left leg toward the floor simultaneously.",
+      "Stop just before either touches the floor. Hold 1 second.",
+      "Return to start. Repeat with left arm + right leg. That's one full rep."
+    ],
+    cues: "The core job here is keeping your lower back flat — if your back arches off the floor, you've gone too far. Shorten the range of motion until your core is strong enough. Breathe out as you extend.",
+    warning: "This is a lower-back-safe exercise. No loaded spinal flexion. Stop if you feel any lower back strain — reduce range of motion rather than compensating."
+  },
+  plank: {
+    title: "Plank Hold",
+    tag: "Day A — Push + Core",
+    setup: "Forearms on the floor, elbows under shoulders. Body in a straight line — head neutral, hips level with shoulders. Do not let hips rise or sag.",
+    execution: [
+      "Hold the position, breathing steadily.",
+      "Squeeze everything: quads, glutes, abs, fists.",
+      "If form breaks (hips sag, butt rises), stop the set. Duration means nothing if form is gone."
+    ],
+    cues: "Think about pulling your elbows toward your feet without actually moving them — this engages the lats and makes the plank significantly harder and more effective.",
+    warning: "If lower back is aching (not just burning abs), you've lost the neutral spine position. Re-set. A 30-second perfect plank beats a 60-second sloppy one."
+  },
+  catcow: {
+    title: "Cat-Cow + Thoracic Rotation",
+    tag: "Day A — Lower Back Care | Non-optional",
+    setup: "On hands and knees. Wrists under shoulders, knees under hips. Start with a neutral flat-back position.",
+    execution: [
+      "CAT: Exhale and round your spine toward the ceiling, tucking chin to chest and pelvis under.",
+      "COW: Inhale and drop your belly toward the floor, lifting your head and tailbone. Move through the full range slowly.",
+      "ROTATION: From neutral, thread one arm under your body, rotating your upper back. Follow with your eyes. Return. Do both sides."
+    ],
+    cues: "This is mobility work, not a workout. Move slowly with your breath. The thoracic rotation targets the mid-back stiffness that contributes to lower back stress.",
+    warning: ""
+  },
+  pullup: {
+    title: "Pull-ups or Inverted Rows",
+    tag: "Day B — Pull + Hinge",
+    setup: "PULL-UP: Hang from a bar with hands slightly wider than shoulder-width, palms facing away. Full hang, shoulders packed down (not shrugged). INVERTED ROW: Get under a sturdy table. Grip edge, body straight, heels on floor. Adjust angle to control difficulty.",
+    execution: [
+      "PULL-UP: Pull your chest toward the bar, leading with your elbows driving down. Chin clears the bar. Lower under control — don't drop.",
+      "INVERTED ROW: Pull your chest to the table edge, squeezing shoulder blades together at the top. Lower under control.",
+      "Do max reps with full range of motion. Stop when form deteriorates."
+    ],
+    cues: "If pull-ups aren't available, inverted rows are equally effective for this program. Think 'elbows to back pockets' to engage lats properly rather than just biceps.",
+    warning: ""
+  },
+  superman: {
+    title: "Superman Holds",
+    tag: "Day B — Posterior Chain | Lower Back Rehab",
+    setup: "Lie face down, arms extended overhead, legs straight. Forehead lightly on floor or hovering.",
+    execution: [
+      "Simultaneously raise both arms and both legs off the floor, squeezing your glutes and upper back.",
+      "Hold for 2–3 seconds at the top. You should feel this in your glutes, lower back, and between your shoulder blades.",
+      "Lower slowly. That's one rep."
+    ],
+    cues: "This is direct lower back rehab work — it strengthens the exact muscle group (erector spinae + glutes) that supports your spine during all other movements. Do not rush these.",
+    warning: "If you feel sharp pain (not effort burn) in your lower back, stop and do glute bridges instead for this session. Report at next check-in."
+  },
+  slrdl: {
+    title: "Single-Leg RDL (Bodyweight)",
+    tag: "Day B — Pull + Hinge | Lower Back Caution",
+    setup: "Stand on one leg, slight bend in the standing knee. Arms can hang or extend for balance. Find a focal point on the floor about 6 feet ahead.",
+    execution: [
+      "Hinge at the hip — push your hips back while keeping your back flat. Your torso and your raised leg form a T as you go parallel.",
+      "You should feel a stretch in the hamstring of the standing leg.",
+      "Drive your hip forward to return to standing. Squeeze the glute at the top."
+    ],
+    cues: "The back stays flat throughout — if it rounds, you've gone past your hamstring flexibility. Build range over time. Think 'proud chest' as you hinge to cue the flat back.",
+    warning: "If this causes lower back pain (not hamstring tightness), substitute GLUTE BRIDGE MARCHES for the entire set. Notify advisor at next session."
+  },
+  glute: {
+    title: "Glute Bridges",
+    tag: "Day B — Pull + Hinge | Lower Back Safe",
+    setup: "Lie on your back, knees bent at 90°, feet flat on floor hip-width apart, arms at sides.",
+    execution: [
+      "Drive through your heels, squeezing your glutes to lift your hips off the floor.",
+      "Hips rise until your body forms a straight line from knees to shoulders. Don't hyperextend — stop when you feel the glute squeeze.",
+      "Hold 1 second at the top. Lower slowly under control."
+    ],
+    cues: "This is the backup for single-leg RDLs if your back flares. It's also genuinely excellent for building glute strength, which directly protects your lower back. Squeeze hard at the top — don't just go through the motion.",
+    warning: ""
+  },
+  hollow: {
+    title: "Hollow Body Hold",
+    tag: "Day B — Core",
+    setup: "Lie on your back, arms extended overhead, legs straight. Press your entire lower back into the floor.",
+    execution: [
+      "Raise your arms, shoulders, and legs off the floor — legs about 6–12 inches up, shoulders just off the ground.",
+      "Hold this position. Your lower back must stay in contact with the floor throughout.",
+      "If your back arches off the floor, raise your legs higher (makes it easier) until you build the strength to lower them."
+    ],
+    cues: "This is a total anterior chain tension exercise. If you can breathe normally while holding it, you're doing it right. Brace your abs like you're about to take a punch.",
+    warning: "If lower back lifts off the floor, raise legs higher or bend knees — do not proceed with arched lower back."
+  },
+  hipflexor: {
+    title: "Hip Flexor + Piriformis Stretch",
+    tag: "Day B — Mobility | NON-OPTIONAL for lower back",
+    setup: "HIP FLEXOR: Half-kneeling lunge position — one knee on floor, other foot forward at 90°. PIRIFORMIS: Lie on back, cross one ankle over the opposite knee (figure 4 position).",
+    execution: [
+      "HIP FLEXOR: Gently push hips forward until you feel the stretch in the front of the hip of the kneeling leg. Hold 2 minutes. Switch sides.",
+      "PIRIFORMIS: Gently pull the uncrossed leg toward your chest until you feel it in the hip/glute of the crossed leg. Hold 2 minutes. Switch sides."
+    ],
+    cues: "Hip flexor tightness from sitting is almost certainly contributing to your lower back discomfort. This stretch is not optional — it is the most important thing in this entire workout for long-term lower back health.",
+    warning: "2 minutes per side is the minimum effective dose. 30-second stretches accomplish almost nothing for chronic hip flexor tightness."
+  },
+  squat: {
+    title: "Bodyweight Squats",
+    tag: "Day C — Squat + Legs",
+    setup: "Feet shoulder-width or slightly wider, toes pointed out 15–30°. Arms can extend forward for balance. Weight in your heels and mid-foot.",
+    execution: [
+      "Sit back and down, pushing your knees out over your toes in the direction they're pointing.",
+      "Aim to get thighs parallel to the floor or below. Keep your chest up — don't fold forward.",
+      "Drive through heels to stand. Lock out hips at the top."
+    ],
+    cues: "You have 100-rep capacity so these are metabolic/endurance work for you, not strength. Focus on depth and consistent pace. Keep the chest up — if it drops, your hip flexors are limiting you (see piriformis stretch).",
+    warning: ""
+  },
+  bss: {
+    title: "Bulgarian Split Squats",
+    tag: "Day C — Squat + Legs",
+    setup: "Stand 2–3 feet in front of a chair or couch. Place the top of your rear foot on the surface behind you. Front foot should be far enough forward that your knee doesn't pass your toes.",
+    execution: [
+      "Lower your back knee toward the floor, keeping your torso upright.",
+      "Front knee tracks over your toes — drive it outward, don't let it cave in.",
+      "Push through the heel of your front foot to stand. Control the descent — don't drop."
+    ],
+    cues: "This is the hardest exercise in the program. Start conservative and build. Keep your torso upright — if you're leaning heavily forward, step your front foot out further.",
+    warning: "If knee pain develops (not muscle burn), reduce range of motion immediately and report at next session."
+  },
+  stepup: {
+    title: "Step-ups",
+    tag: "Day C — Squat + Legs",
+    setup: "Use a step, box, or sturdy surface 18–24 inches high. Stand facing it.",
+    execution: [
+      "Place one foot fully on the surface. Drive through that heel to stand up — do not push off with your trailing leg.",
+      "Bring the trailing leg up to stand, then lower it back down under control.",
+      "Complete all reps on one leg, then switch."
+    ],
+    cues: "The key technique point: drive through the heel of the working leg only. Pushing off your bottom foot turns this into a glorified skip rather than a leg exercise. The higher the step, the more glute involvement.",
+    warning: ""
+  },
+  wallsit: {
+    title: "Wall Sit",
+    tag: "Day C — Squat + Legs",
+    setup: "Back against a flat wall. Walk feet out until thighs are parallel to the floor (or as close as you can manage). Feet hip-width, flat on floor.",
+    execution: [
+      "Hold the position, weight evenly through both feet.",
+      "Keep back flat against the wall — don't slide up as fatigue sets in.",
+      "If form breaks (back leaves wall, thighs rise), end the set."
+    ],
+    cues: "This is isometric quad endurance. The burn is real — this is working. Breathe steadily. The moment you push through your toes and lift your heels, you've lost the position.",
+    warning: ""
+  },
+  calf: {
+    title: "Single-Leg Calf Raises",
+    tag: "Day C — Squat + Legs",
+    setup: "Stand near a wall for light balance support. Lift one foot off the floor, either bent behind you or crossed over the other ankle.",
+    execution: [
+      "Rise up onto the ball of your standing foot as high as you can go.",
+      "Pause at the top. Lower slowly under control — don't drop.",
+      "Full range: let the heel drop below foot level if you're on a step edge (better stretch)."
+    ],
+    cues: "Calves respond to high reps and full range of motion. Slow the descent — the eccentric (lowering) portion is where most of the growth stimulus is. Use a step if available for greater range.",
+    warning: ""
+  }
+};
+
+function openModal(key) {
+  var ex = exercises[key];
+  if (!ex) return;
+  document.getElementById('modal-title').textContent = ex.title;
+  document.getElementById('modal-tag').textContent = ex.tag;
+
+  var html = '';
+
+  html += '<div class="modal-section"><div class="modal-section-label">Setup</div><p>' + ex.setup + '</p></div>';
+
+  html += '<div class="modal-section"><div class="modal-section-label">Execution</div><ul>';
+  for (var i = 0; i < ex.execution.length; i++) {
+    html += '<li>' + ex.execution[i] + '</li>';
+  }
+  html += '</ul></div>';
+
+  if (ex.cues) {
+    html += '<div class="modal-section"><div class="modal-section-label">Key Cue</div><p>' + ex.cues + '</p></div>';
+  }
+
+  if (ex.warning) {
+    html += '<div class="modal-warning">⚠️ ' + ex.warning + '</div>';
+  }
+
+  document.getElementById('modal-content').innerHTML = html;
+  document.getElementById('modal-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('modal-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function closeModalOutside(e) {
+  if (e.target === document.getElementById('modal-overlay')) {
+    closeModal();
+  }
+}
+
+// Close modal on back button (mobile)
+window.addEventListener('popstate', function() {
+  closeModal();
+});
+</script>
+</body>
+</html>
