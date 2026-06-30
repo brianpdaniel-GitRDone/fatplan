@@ -155,6 +155,23 @@
   .day-name-cell{font-weight:700;font-size:12px;}
   .day-date-cell{font-size:11px;color:var(--muted);}
 
+  /* ── Shopping List ── */
+  .shop-cat{margin:22px 0 8px;font-size:13px;font-weight:700;color:var(--green-dark);background:var(--green-light);padding:8px 12px;border-radius:6px;text-transform:uppercase;letter-spacing:.4px;}
+  .shop-cat:first-child{margin-top:0;}
+  .shop-card{background:white;border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+  .shop-item{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border-bottom:1px solid var(--border);}
+  .shop-item:last-child{border-bottom:none;}
+  .shop-item.checked{background:#F7FBF7;}
+  .shop-item.checked .shop-name{text-decoration:line-through;color:var(--muted);}
+  .shop-check{width:20px;height:20px;flex-shrink:0;margin-top:2px;accent-color:var(--green-mid);cursor:pointer;}
+  .shop-info{flex:1;min-width:0;}
+  .shop-name{font-size:14px;font-weight:700;color:var(--text);}
+  .shop-meta{font-size:11px;color:var(--muted);margin-top:2px;}
+  .shop-notes{font-size:12px;color:var(--text);margin-top:3px;line-height:1.4;}
+  .shop-cost{font-size:12px;color:var(--blue-dark);font-weight:700;white-space:nowrap;flex-shrink:0;}
+  .shop-total-bar{display:flex;justify-content:space-between;align-items:center;background:var(--blue-light);border-radius:8px;padding:12px 16px;margin-bottom:16px;font-size:13px;color:var(--blue-dark);}
+  .shop-total-bar strong{font-size:18px;}
+
   @media(max-width:600px){
     .macro-strip{grid-template-columns:repeat(3,1fr);}
     main{padding:16px;}
@@ -182,6 +199,7 @@
 <nav>
   <button class="ntab active" onclick="show('nutrition',this)">Nutrition</button>
   <button class="ntab" onclick="show('meals',this)">Meal Schedule</button>
+  <button class="ntab" onclick="show('shopping',this)">Shopping List</button>
   <button class="ntab" onclick="show('workout',this)">Workouts</button>
   <button class="ntab" onclick="show('timeline',this)">Timeline</button>
   <button class="ntab" onclick="show('activity',this)">Activity Monitor</button>
@@ -222,6 +240,26 @@
   </table>
   <div class="callout c-blue"><strong>Why split breakfast?</strong> Eating a large meal before 2.5hrs of exercise causes sluggishness and reduces fat oxidation. The split gives you fuel to perform without a full stomach, and the post-workout window maximizes muscle protein synthesis.</div>
   <div class="callout c-green"><strong>The 3pm shake is your evening hunger defense.</strong> Placed deliberately to bridge lunch and dinner, it eliminates the salty-snack urge before it starts. If you find yourself hungry after dinner, move the shake 30 minutes later — don't add food.</div>
+</div>
+
+<!-- SHOPPING LIST -->
+<div id="shopping" class="panel">
+  <h2>Weekly Shopping List</h2>
+  <p class="desc">Buy every Sunday. Tap an item to check it off — checks save automatically on this device. Freeze proteins you won't use by Wednesday.</p>
+
+  <div class="shop-total-bar">
+    <span>Est. weekly total (incl. prorated supplements)</span>
+    <strong id="shop-total">$0</strong>
+  </div>
+
+  <div class="am-controls" style="margin-bottom:18px;">
+    <button class="am-btn secondary" onclick="resetShopList()">↺ Uncheck all (new week)</button>
+  </div>
+
+  <div id="shop-list"></div>
+
+  <div class="callout c-blue" style="margin-top:16px;">Supplements are bought monthly, not weekly — their cost above is the prorated weekly share so the total stays comparable. Don't re-buy whey isolate, creatine, D3/K2, or magnesium every week.</div>
+  <p style="font-size:11px;color:var(--muted);margin-top:10px;">Checklist saves to this browser only (localStorage). Clearing browser data will reset it.</p>
 </div>
 
 <!-- WORKOUT -->
@@ -433,6 +471,7 @@ function show(id, btn) {
   document.getElementById(id).classList.add('active');
   if (btn) btn.classList.add('active');
   if (id === 'activity') updateSummary();
+  if (id === 'shopping') renderShopList();
 }
 
 // ── Exercise modal data ──
@@ -591,6 +630,97 @@ function exportCSV() {
 document.getElementById('week-start').value = new Date().toISOString().split('T')[0];
 renderLog();
 updateSummary();
+// ── Shopping List ──
+var shopData = [
+  {cat:"Proteins", items:[
+    {id:"chicken",name:"Chicken breast",qty:"4–5 lbs",aisle:"Meat",notes:"Batch-cook all Sunday; freeze day 4+",costLabel:"$10–14",cost:12},
+    {id:"salmon",name:"Salmon fillets",qty:"2 lbs",aisle:"Seafood",notes:"Fresh or frozen; dinner Mon/Thu",costLabel:"$14–18",cost:16},
+    {id:"turkey",name:"Ground turkey 93% lean",qty:"2 lbs",aisle:"Meat",notes:"Cook Sunday; dinner Tue/Fri",costLabel:"$7–9",cost:8},
+    {id:"beef",name:"Lean ground beef 93%",qty:"1 lb",aisle:"Meat",notes:"Cook Sunday; dinner Wed/Sat",costLabel:"$6–8",cost:7},
+    {id:"eggs",name:"Eggs (large)",qty:"2.5 dozen",aisle:"Dairy/Eggs",notes:"Hard-boil 10 on Sunday",costLabel:"$7–9",cost:9},
+    {id:"yogurt",name:"Nonfat Greek yogurt",qty:"32 oz tub",aisle:"Dairy",notes:"Breakfast + shake",costLabel:"$5–7",cost:8},
+    {id:"cottage",name:"Nonfat cottage cheese",qty:"24 oz tub",aisle:"Dairy",notes:"Sunday dinner alt / swap for yogurt",costLabel:"$4–5",cost:5},
+    {id:"wheyonhand",name:"Whey isolate protein",qty:"Supply on hand",aisle:"Pantry",notes:"2 scoops/day for 3pm shake",costLabel:"—",cost:0}
+  ]},
+  {cat:"Carbs & Starches", items:[
+    {id:"oats",name:"Rolled oats (old-fashioned)",qty:"42 oz canister",aisle:"Cereal/Grains",notes:"¾ cup dry per breakfast",costLabel:"$5–7",cost:5},
+    {id:"rice",name:"Brown rice",qty:"5 lb bag",aisle:"Grains",notes:"¾ cup cooked per lunch",costLabel:"$4–6",cost:5},
+    {id:"sweetpotato",name:"Sweet potatoes (medium)",qty:"5 count",aisle:"Produce",notes:"Sub for rice at lunch or dinner",costLabel:"$4–5",cost:5},
+    {id:"ezekiel",name:"Ezekiel bread (frozen)",qty:"1 loaf",aisle:"Frozen/Bread",notes:"Sunday dinner + Week B breakfast",costLabel:"$5–7",cost:5},
+    {id:"bananas",name:"Bananas",qty:"7 count",aisle:"Produce",notes:"1/day in afternoon shake",costLabel:"$2–3",cost:2}
+  ]},
+  {cat:"Vegetables", items:[
+    {id:"broccoli",name:"Broccoli florets",qty:"2 lbs (fresh or frozen)",aisle:"Produce/Frozen",notes:"Roast Sunday for week",costLabel:"$3–5",cost:4},
+    {id:"spinach",name:"Baby spinach",qty:"5 oz bag",aisle:"Produce",notes:"Dinner salads",costLabel:"$3–4",cost:4},
+    {id:"greens",name:"Mixed salad greens",qty:"1 large bag",aisle:"Produce",notes:"Dinner salads",costLabel:"$4–5",cost:4},
+    {id:"cucumber",name:"Cucumber",qty:"2 count",aisle:"Produce",notes:"Dinner salads",costLabel:"$2",cost:3},
+    {id:"tomatoes",name:"Cherry tomatoes",qty:"1 pint",aisle:"Produce",notes:"Dinner salads",costLabel:"$3–4",cost:3},
+    {id:"greenbeans",name:"Green beans or zucchini",qty:"1 lb",aisle:"Produce",notes:"Lunch veg rotation",costLabel:"$2–3",cost:4}
+  ]},
+  {cat:"Fats & Pantry", items:[
+    {id:"oliveoil",name:"Extra virgin olive oil",qty:"1 bottle",aisle:"Oils",notes:"Cooking + dressing; ~1 tbsp/meal",costLabel:"$8–10",cost:9},
+    {id:"avocado",name:"Avocados",qty:"3–4 count",aisle:"Produce",notes:"¼ avocado in dinner salad",costLabel:"$4–6",cost:5},
+    {id:"nutbutter",name:"Almond butter or peanut butter",qty:"1 jar (natural)",aisle:"Nut Butters",notes:"1 tbsp in afternoon shake",costLabel:"$7–9",cost:8},
+    {id:"acv",name:"Apple cider vinegar",qty:"Pantry staple",aisle:"Condiments",notes:"Salad dressing",costLabel:"—",cost:0},
+    {id:"berries",name:"Frozen mixed berries",qty:"1 bag",aisle:"Frozen",notes:"Shake alt to banana",costLabel:"$4–5",cost:5},
+    {id:"almondmilk",name:"Unsweetened almond milk",qty:"½ gallon",aisle:"Dairy Alt",notes:"Shake base",costLabel:"$3–4",cost:4}
+  ]},
+  {cat:"Supplements (monthly restock)", items:[
+    {id:"wheybag",name:"Whey isolate 5 lb bag",qty:"1 bag/month",aisle:"Online/Health",notes:"Use isolate not concentrate",costLabel:"$45–60/mo",cost:13.75},
+    {id:"creatine",name:"Creatine monohydrate",qty:"5g/day",aisle:"Health",notes:"Monohydrate only, no loading",costLabel:"$15–20/mo",cost:4.5},
+    {id:"d3k2",name:"Vitamin D3 + K2",qty:"2,000–4,000 IU/day",aisle:"Health",notes:"Critical at 60; take with fat",costLabel:"$10–15/mo",cost:3},
+    {id:"magnesium",name:"Magnesium glycinate",qty:"400mg/day",aisle:"Health",notes:"Before bed; improves sleep + recovery",costLabel:"$15–20/mo",cost:4.5}
+  ]}
+];
+
+function renderShopList() {
+  var wrap = document.getElementById('shop-list');
+  if (!wrap) return;
+  var saved = {};
+  try { var s = localStorage.getItem('shoplist_v1'); if (s) saved = JSON.parse(s); } catch(e) {}
+  wrap.innerHTML = '';
+  var total = 0;
+  shopData.forEach(function(group) {
+    var catEl = document.createElement('div');
+    catEl.className = 'shop-cat';
+    catEl.textContent = group.cat;
+    wrap.appendChild(catEl);
+    var card = document.createElement('div');
+    card.className = 'shop-card';
+    group.items.forEach(function(it) {
+      total += it.cost || 0;
+      var checked = !!saved[it.id];
+      var row = document.createElement('div');
+      row.className = 'shop-item' + (checked ? ' checked' : '');
+      row.innerHTML =
+        '<input type="checkbox" class="shop-check" ' + (checked ? 'checked' : '') + ' onchange="toggleShopItem(\'' + it.id + '\',this)">' +
+        '<div class="shop-info">' +
+          '<div class="shop-name">' + it.name + '</div>' +
+          '<div class="shop-meta">' + it.qty + ' &middot; ' + it.aisle + '</div>' +
+          '<div class="shop-notes">' + it.notes + '</div>' +
+        '</div>' +
+        '<div class="shop-cost">' + it.costLabel + '</div>';
+      card.appendChild(row);
+    });
+    wrap.appendChild(card);
+  });
+  var totalEl = document.getElementById('shop-total');
+  if (totalEl) totalEl.textContent = '$' + total.toFixed(2).replace(/\.00$/, '');
+}
+
+function toggleShopItem(id, el) {
+  var saved = {};
+  try { var s = localStorage.getItem('shoplist_v1'); if (s) saved = JSON.parse(s); } catch(e) {}
+  saved[id] = el.checked;
+  try { localStorage.setItem('shoplist_v1', JSON.stringify(saved)); } catch(e) {}
+  el.closest('.shop-item').classList.toggle('checked', el.checked);
+}
+
+function resetShopList() {
+  try { localStorage.removeItem('shoplist_v1'); } catch(e) {}
+  renderShopList();
+}
+
 </script>
 </body>
 </html>
